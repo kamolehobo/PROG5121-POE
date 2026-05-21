@@ -1,0 +1,18 @@
+[
+  {
+    "messageID": "2120803570",
+    "messageNumber": 1,
+    "recipientCell": "+27761285572",
+    "messageText": "Hi  there! Would you like to play cod tonight ?",
+    "messageHash": "21:1:HI:",
+    "totalMessagesSent": 1
+  },
+  {
+    "messageID": "2352179053",
+    "messageNumber": 2,
+    "recipientCell": "+27761285572",
+    "messageText": "Okay, 9 method",
+    "messageHash": "23:2:OKAY:METHOD",
+    "totalMessagesSent": 1
+  }
+]

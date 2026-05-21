@@ -70,32 +70,33 @@ public class Main {
         int messageCount = 0;
         ArrayList<Message> sentMessages = new ArrayList<>();
 
-        boolean running = true;
-        while (running) {
-            System.out.println("\n" + "-".repeat(40));
-            System.out.println("MAIN MENU");
-            System.out.println("-".repeat(40));
-            System.out.println("1) Send Messages");
-            System.out.println("2) Show recently sent messages");
-            System.out.println("3) Quit");
-            System.out.print("Choose an option: ");
+        // For loop to handle message input
+        for (messageCount = 0; messageCount < maxMessages; messageCount++) {
+            boolean running = true;
+            
+            while (running) {
+                System.out.println("\n" + "-".repeat(40));
+                System.out.println("MAIN MENU");
+                System.out.println("-".repeat(40));
+                System.out.println("1) Send Messages");
+                System.out.println("2) Show recently sent messages");
+                System.out.println("3) Quit");
+                System.out.print("Choose an option: ");
 
-            int choice = input.nextInt();
-            input.nextLine(); // Consume newline
+                int choice = input.nextInt();
+                input.nextLine(); // Consume newline
 
-            switch (choice) {
-                case 1:
-                    if (messageCount < maxMessages) {
-                        messageCount++;
+                switch (choice) {
+                    case 1:
                         System.out.println("\n" + "-".repeat(40));
-                        System.out.println("SEND MESSAGE #" + messageCount);
+                        System.out.println("SEND MESSAGE #" + (messageCount + 1));
                         System.out.println("-".repeat(40));
 
                         Message message = new Message();
 
                         // Generate Message ID
                         message.generateMessageID();
-                        message.setMessageNumber(messageCount);
+                        message.setMessageNumber(messageCount + 1);
 
                         // Get recipient cell
                         System.out.print("Enter recipient cell number (format: +27xxxxxxxxx): ");
@@ -104,7 +105,6 @@ public class Main {
                         System.out.println(cellResult);
 
                         if (!cellResult.contains("successfully")) {
-                            messageCount--;
                             break;
                         }
 
@@ -115,7 +115,6 @@ public class Main {
                         System.out.println(lengthResult);
 
                         if (!lengthResult.contains("ready")) {
-                            messageCount--;
                             break;
                         }
 
@@ -144,36 +143,54 @@ public class Main {
                             System.out.println("-".repeat(40));
                             System.out.println(message.printMessage());
                             System.out.println("-".repeat(40));
-                        } else {
-                            // Message discarded
-                            messageCount--;
                         }
 
-                        int remaining = maxMessages - messageCount;
+                        int remaining = maxMessages - (messageCount + 1);
                         System.out.println("\nMessages remaining: " + remaining);
+                        running = false;
+                        break;
 
-                    } else {
-                        System.out.println("\n❌ You have reached the maximum number of messages (" + maxMessages + ")");
-                    }
+                    case 2:
+                        System.out.println("\n⏳ Coming Soon.");
+                        break;
+
+                    case 3:
+                        System.out.println("\n" + "=".repeat(50));
+                        System.out.println("SUMMARY");
+                        System.out.println("=".repeat(50));
+                        System.out.println("Total messages sent: " + sentMessages.size());
+                        System.out.println("Thank you for using QuickChat, " + firstName + "!");
+                        System.out.println("=".repeat(50));
+                        
+                        // Save messages to JSON
+                        if (!sentMessages.isEmpty()) {
+                            JSONUtil.saveMessagesToJSON(sentMessages);
+                        }
+                        
+                        input.close();
+                        return;
+
+                    default:
+                        System.out.println("\n❌ Invalid choice. Please try again.");
+                }
+                
+                if (!running) {
                     break;
-
-                case 2:
-                    System.out.println("\n⏳ Coming Soon.");
-                    break;
-
-                case 3:
-                    System.out.println("\n" + "=".repeat(50));
-                    System.out.println("SUMMARY");
-                    System.out.println("=".repeat(50));
-                    System.out.println("Total messages sent: " + sentMessages.size());
-                    System.out.println("Thank you for using QuickChat, " + firstName + "!");
-                    System.out.println("=".repeat(50));
-                    running = false;
-                    break;
-
-                default:
-                    System.out.println("\n❌ Invalid choice. Please try again.");
+                }
             }
+        }
+
+        // After loop completes
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("SUMMARY");
+        System.out.println("=".repeat(50));
+        System.out.println("Total messages sent: " + sentMessages.size());
+        System.out.println("Thank you for using QuickChat, " + firstName + "!");
+        System.out.println("=".repeat(50));
+        
+        // Save messages to JSON
+        if (!sentMessages.isEmpty()) {
+            JSONUtil.saveMessagesToJSON(sentMessages);
         }
 
         input.close();

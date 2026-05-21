@@ -118,4 +118,14 @@ public class Message {
     public String getMessageHash() {
         return messageHash;
     }
+    
+        // Additional getters for JSON serialization
+    public int getMessageNumber() {
+        return messageNumber;
+    }
+
+    public int getTotalMessagesSent() {
+        return totalMessagesSent;
+    }
+
 }
